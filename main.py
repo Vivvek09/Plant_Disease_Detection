@@ -218,7 +218,7 @@ elif app_mode == "Disease Recognition":
         st.success("Model predicts it's {}".format(class_name[result_index]))
         st.title('Gemini API Example')
         
-        question = f"I have a plant with a {class_name[result_index]}. How do I treat it? Answer in 10 words"
+        question = f"I have a plant which has a disease - {class_name[result_index]}. How do I treat it? Answer in 10 words"
 
         answer = get_answer(question)
 
