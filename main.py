@@ -5,7 +5,7 @@ import requests
 from pathlib import Path
 
 
-path_to_model = Path('./trained_plant_disease_model.keras')
+path_to_model = Path('trained_plant_disease_model.h5')
 
 # Replace with your Gemini API key
 def get_answer(question):
