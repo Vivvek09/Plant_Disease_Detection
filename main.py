@@ -227,9 +227,3 @@ elif app_mode == "Disease Recognition":
         else:
           st.error("No valid response received.")
 
-
-
-        if answer:
-          st.success(f"Answer: {answer}")
-        else:
-          st.error("No valid response received.")
