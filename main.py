@@ -2,27 +2,32 @@ import streamlit as st
 import tensorflow as tf
 import numpy as np
 import requests
+from pathlib import Path
+
+
+path_to_model = Path('./trained_plant_disease_model.keras')
 
 # Replace with your Gemini API key
 def get_answer(question):
-    url = "https://gemini-pro-ai.p.rapidapi.com/"
+    url = "https://open-ai21.p.rapidapi.com/chatgpt"
 
     payload = {
-        "contents": [
-            {
-                "role": "user",
-                "parts": [{"text": question}]
-            }
-        ]
+	 "messages": [
+		{
+			"role": "user",
+			"content": [{"text": question}]
+		}
+	 ],
+	 "web_access": False
     }
     headers = {
-        "content-type": "application/json",
-        "X-RapidAPI-Key": "7b11c23847msh7a5d7127194ac43p12b273jsn2ce1c9d969d0",
-        "X-RapidAPI-Host": "gemini-pro-ai.p.rapidapi.com"
+	 "content-type": "application/json",
+	 "X-RapidAPI-Key": "7b11c23847msh7a5d7127194ac43p12b273jsn2ce1c9d969d0",
+	 "X-RapidAPI-Host": "open-ai21.p.rapidapi.com"
     }
 
     response = requests.post(url, json=payload, headers=headers)
-    generated_text = response.json()['candidates'][0]['content']['parts'][0]['text']
+    generated_text = response.json()['result']
     return generated_text
 
 # News API configuration
@@ -47,8 +52,8 @@ def get_current_price(symbol):
         return None
     
 # Tensorflow Model Prediction
-def model_prediction(test_image):
-    model = tf.keras.models.load_model("trained_plant_disease_model.keras")
+def model_prediction(test_image,path_to_model):
+    model = tf.keras.models.load_model(path_to_model)
     image = tf.keras.preprocessing.image.load_img(test_image, target_size=(128, 128))
     input_arr = tf.keras.preprocessing.image.img_to_array(image)
     input_arr = np.array([input_arr])  # convert single image to batch
@@ -169,7 +174,7 @@ elif app_mode == "Disease Recognition":
     # Predict button
     if st.button("Predict"):
         st.spinner(text="Predicting...")
-        result_index = model_prediction(test_image)
+        result_index = model_prediction(test_image,path_to_model)
         class_name = [
             "Apple___Apple_scab",
             "Apple___Black_rot",
@@ -216,6 +221,13 @@ elif app_mode == "Disease Recognition":
         question = f"I have a plant with a {class_name[result_index]}. How do I treat it? Answer in 10 words"
 
         answer = get_answer(question)
+
+        if answer:
+          st.success(f"Answer: {answer}")
+        else:
+          st.error("No valid response received.")
+
+
 
         if answer:
           st.success(f"Answer: {answer}")
