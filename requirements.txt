@@ -15,7 +15,6 @@ exceptiongroup==1.2.1
 flatbuffers==24.3.25
 frozenlist==1.4.1
 gast==0.5.4
-google-ai-generativelanguage==0.6.2
 google-api-core==2.18.0
 google-api-python-client==2.127.0
 google-auth==2.29.0
@@ -42,7 +41,6 @@ ml-dtypes==0.3.2
 multidict==6.0.5
 namex==0.0.8
 numpy==1.26.4
-openai==0.28.0
 opt-einsum==3.3.0
 optree==0.11.0
 packaging==24.0
