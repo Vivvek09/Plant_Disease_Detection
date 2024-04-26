@@ -2,21 +2,33 @@ import streamlit as st
 import tensorflow as tf
 import numpy as np
 import requests
-import openai
+from pathlib import Path
 
-# Set up OpenAI API
-openai.api_key = 'sk-proj-vvDAsEtQZda6A2JiuMIdT3BlbkFJOg9zkk6NHPazAiYJXQop'
-def generate_treatment(disease):
-    prompt = f"Patient diagnosed with {disease}. Please provide treatment recommendations."
-    response = openai.Completion.create(
-        engine="gpt-3.5-turbo-instruct",  # Choose the appropriate engine
-        prompt=prompt,
-        max_tokens=150,  # Adjust as needed
-        temperature=0.7,  # Adjust for diversity
-        n=1,  # Number of completions to generate
-        stop="\n",  # Stop generation at new line
-    )
-    return response.choices[0].text.strip()
+
+path_to_model = Path('trained_plant_disease_model.h5')
+
+# Replace with your Gemini API key
+def get_answer(question):
+    url = "https://open-ai21.p.rapidapi.com/chatgpt"
+
+    payload = {
+	 "messages": [
+		{
+			"role": "user",
+			"content": [{"text": question}]
+		}
+	 ],
+	 "web_access": False
+    }
+    headers = {
+	 "content-type": "application/json",
+	 "X-RapidAPI-Key": "7b11c23847msh7a5d7127194ac43p12b273jsn2ce1c9d969d0",
+	 "X-RapidAPI-Host": "open-ai21.p.rapidapi.com"
+    }
+
+    response = requests.post(url, json=payload, headers=headers)
+    generated_text = response.json()['result']
+    return generated_text
 
 # News API configuration
 NEWS_API_KEY = 'd64b3bcfb79e4b53b7f587b3cd1ed688'  # Replace 'YOUR_NEWS_API_KEY' with your actual News API key
@@ -40,8 +52,8 @@ def get_current_price(symbol):
         return None
     
 # Tensorflow Model Prediction
-def model_prediction(test_image):
-    model = tf.keras.models.load_model("trained_plant_disease_model.keras")
+def model_prediction(test_image,path_to_model):
+    model = tf.keras.models.load_model(path_to_model)
     image = tf.keras.preprocessing.image.load_img(test_image, target_size=(128, 128))
     input_arr = tf.keras.preprocessing.image.img_to_array(image)
     input_arr = np.array([input_arr])  # convert single image to batch
@@ -162,7 +174,7 @@ elif app_mode == "Disease Recognition":
     # Predict button
     if st.button("Predict"):
         st.spinner(text="Predicting...")
-        result_index = model_prediction(test_image)
+        result_index = model_prediction(test_image,path_to_model)
         class_name = [
             "Apple___Apple_scab",
             "Apple___Black_rot",
@@ -205,9 +217,14 @@ elif app_mode == "Disease Recognition":
         ]
         st.success("Model predicts it's {}".format(class_name[result_index]))
         st.title('Gemini API Example')
+        
+        question = f"I have a plant with a {class_name[result_index]}. How do I treat it?"
 
-        # Generate treatment recommendation
-        treatment = generate_treatment(result_index)
-        st.subheader("Treatment Recommendation")
-        st.write(treatment)
+        answer = get_answer(question)
+
+        if answer:
+          st.success(f"Answer: {answer}")
+        else:
+          st.error("No valid response received.")
+
 
