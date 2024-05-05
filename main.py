@@ -215,7 +215,7 @@ def set_page_style():
                 --button-hover-bg-color: #3c5a66;
             }
             /* Dark mode */
-            body[data-theme="dark"] {
+            body[data-theme="dark"] {~
                 --background-color: #1e1e1e;
                 --text-color: #ffffff;
                 --button-bg-color: #334d5c;
