@@ -471,113 +471,21 @@ elif app_mode == "Disease Recognition":
             "Tomato___Tomato_mosaic_virus",
             "Tomato___healthy",
         ]
-          result=convert_class_name(class_name[result_index])
-          st.success("Model predicts it's {}".format(result))
-          prompt = f"What are the treatment options for {result} disease?"
-          if "chat" not in st.session_state:
-            st.session_state.chat = model.start_chat(history=[])
+        st.success("Model predicts it's {}".format(class_name[result_index]))
+        st.title('Gemini API Example')
+        
+        question = f"I have a plant with a {class_name[result_index]}. How do I treat it? Answer in 10 words"
 
-        # Treatment prompt and response
-          prompt = f"What are the treatment options for {result} disease?"
-          response = st.session_state.chat.send_message(prompt)
+        answer = get_answer(question)
 
-        # Display prediction and treatment info
-          st.write("**Predicted Disease:**", result)
-          st.write("**Possible Treatments from Assistant:**")
-          with st.expander("See treatment details"):
-            st.write(response.text)
+        if answer:
+          st.success(f"Answer: {answer}")
+        else:
+          st.error("No valid response received.")
 
-        # Chat interaction section
-          st.title("Chat with Google Gemini-Pro!")
 
-        # Display chat history
-          for message in st.session_state.chat.history:
-            with st.chat_message(role_to_streamlit(message.role)):
-                st.markdown(message.parts[0].text)
 
-        # User input and response cycle
-          if prompt := st.chat_input("I possess a well of knowledge. What would you like to know?"):
-            st.chat_message("user").markdown(prompt)
-            response = st.session_state.chat.send_message(prompt)
-            with st.chat_message("assistant"):
-                st.markdown(response.text)
-
-    elif language == "Hindi":
-        st.header("रोग पहचान")
-        test_image = st.file_uploader("छवि चुनें:")
-        if st.button("छवि दिखाएं") and test_image is not None:
-            st.image(test_image, width=300, caption="अपलोड की गई छवि")
-
-        # Predict button
-        if st.button("पूर्वानुमान करें"):
-            st.spinner(text="पूर्वानुमान किया जा रहा है...")
-            result_index = model_prediction(test_image,path_to_model)
-            class_name = [
-            "Apple___Apple_scab",
-            "Apple___Black_rot",
-            "Apple___Cedar_apple_rust",
-            "Apple___healthy",
-            "Blueberry___healthy",
-            "Cherry_(including_sour)___Powdery_mildew",
-            "Cherry_(including_sour)___healthy",
-            "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot",
-            "Corn_(maize)___Common_rust_",
-            "Corn_(maize)___Northern_Leaf_Blight",
-            "Corn_(maize)___healthy",
-            "Grape___Black_rot",
-            "Grape___Esca_(Black_Measles)",
-            "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)",
-            "Grape___healthy",
-            "Orange___Haunglongbing_(Citrus_greening)",
-            "Peach___Bacterial_spot",
-            "Peach___healthy",
-            "Pepper,_bell___Bacterial_spot",
-            "Pepper,_bell___healthy",
-            "Potato___Early_blight",
-            "Potato___Late_blight",
-            "Potato___healthy",
-            "Raspberry___healthy",
-            "Soybean___healthy",
-            "Squash___Powdery_mildew",
-            "Strawberry___Leaf_scorch",
-            "Strawberry___healthy",
-            "Tomato___Bacterial_spot",
-            "Tomato___Early_blight",
-            "Tomato___Late_blight",
-            "Tomato___Leaf_Mold",
-            "Tomato___Septoria_leaf_spot",
-            "Tomato___Spider_mites Two-spotted_spider_mite",
-            "Tomato___Target_Spot",
-            "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
-            "Tomato___Tomato_mosaic_virus",
-            "Tomato___healthy",
-        ]
-            result = convert_class_name(class_name[result_index])
-            st.success("मॉडल यह पूर्वानुमान करता है कि यह {}".format(result))
-            prompt = f"{result} रोग के लिए उपचार विकल्प क्या हैं?"
-            if "chat" not in st.session_state:
-                st.session_state.chat = model.start_chat(history=[])
-
-            # उपचार पूछें और प्रतिक्रिया
-            response = st.session_state.chat.send_message(prompt)
-
-            # पूर्वानुमान और उपचार जानकारी प्रदर्शित करें
-            st.write("**पूर्वानुमानित रोग:**", result)
-            st.write("**सहायक से संभावित उपचार:**")
-            with st.expander("उपचार विवरण देखें"):
-                st.write(response.text)
-
-            # चैट परिचय खंड
-            st.title("Google Gemini-Pro के साथ चैट करें!")
-
-            # चैट इतिहास प्रदर्शित करें
-            for message in st.session_state.chat.history:
-                with st.chat_message(role_to_streamlit(message.role)):
-                    st.markdown(message.parts[0].text)
-
-            # उपयोगकर्ता इनपुट और प्रतिक्रिया चक्र
-            if prompt := st.chat_input("मेरे पास ज्ञान का अच्छा भंडार है। आप क्या जानना चाहेंगे?"):
-                st.chat_message("user").markdown(prompt)
-                response = st.session_state.chat.send_message(prompt)
-                with st.chat_message("assistant"):
-                    st.markdown(response.text)
+        if answer:
+          st.success(f"Answer: {answer}")
+        else:
+          st.error("No valid response received.")
