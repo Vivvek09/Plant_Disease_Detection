@@ -13,7 +13,6 @@ streamlit_folium==0.20.0
 tensorboard==2.16.2
 tensorboard-data-server==0.7.2
 tensorflow==2.16.1
-tensorflow-io-gcs-filesystem==0.31.0
 termcolor==2.4.0
 tf_keras==2.16.0
 translate==3.6.1
