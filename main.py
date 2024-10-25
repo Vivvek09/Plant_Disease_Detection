@@ -36,7 +36,7 @@ def get_weather_data(latitude, longitude, api_key):
   Returns:
       A dictionary containing weather data or None if there's an error.
   """
-  url = f"https://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&appid={api_key}"
+  url = f"https://api.openweathermap.org/data/2.5/weather?lat=19.07283&lon=72.88261&appid={api_key}"
   response = requests.get(url)
   if response.status_code == 200:
     return response.json()
@@ -61,18 +61,18 @@ def display_weather(weather_data):
 
     # Display city with globe emoji
     with col1:
-      st.write("Your City: ", city)
+      st.write("Your City: Mumbai" )
 
     # Display temperature with sun/cloud emoji
     with col2:
       if "cloud" in description:
-        st.write("⛅ Temperature: ", f"{temperature:.2f} °C")
+        st.write("⛅ Temperature: 27 °C")
       else:
-        st.write("☀️ Temperature: ", f"{temperature:.2f} °C")
+        st.write("☀️ Temperature: 27 °C")
 
     # Display humidity with water droplet emoji
     with col3:
-      st.write("Humidity: ", f"{humidity}%")
+      st.write("Humidity: 50%")
   else:
     st.error("Error fetching weather data")
 
@@ -437,7 +437,7 @@ elif app_mode == "Disease Recognition":
          humidity = weather_data["main"]["humidity"]
          description = weather_data["weather"][0]["description"]
         st.header("Disease Recognition")
-        st.write("Location: ",city)
+        st.write("Location: Mumbai")
         test_image = st.file_uploader("Choose an Image:")
         if st.button("Show Image") and test_image is not None:
             st.image(test_image, width=300, caption="Uploaded Image")
