@@ -4,7 +4,6 @@ import numpy as np
 import streamlit.components.v1 as components
 import requests
 from pathlib import Path
-from dotenv import load_dotenv
 import os
 import google.generativeai as genai
 import requests
